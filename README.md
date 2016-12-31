@@ -1,4 +1,5 @@
 # jschart
+![alt tag](https://github.com/metadeath/jschart/blob/master/chart.png)
 Javascript chart library
 
 
