@@ -1,6 +1,5 @@
 # jschart
 ![alt tag](https://github.com/metadeath/jschart/blob/master/chart.png)
-Javascript chart library
 
 
 1. Create a settings object, if the fields is left blank, default colors will be used.
