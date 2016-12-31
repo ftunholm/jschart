@@ -1,0 +1,2 @@
+# jschart
+Javascript chart library
