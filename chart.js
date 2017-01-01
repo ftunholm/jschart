@@ -7,19 +7,19 @@
 		var startY;
 		var chartWidth;
 		var chartHeight;
-		var nodeSideLength;//Node square side length		
+		var nodeSideLength;//Node square side length
 		var colors = [];
 		var foundNode = false; //Used for the reapinting procedure
 		var nodes = [];
 		var chartData;
-		
+
 		//Settings variables
 		var chartColor = "black";
 		var backgroundColor = "#FFFFFF";
 		var chartLinesColor = "lightgray";
 		var textColor = "black";
-			
-	
+
+
 		function chartify(canvas, chartData, settings) {
 			this.canvas = canvas;
 			context = canvas.getContext("2d");
@@ -31,7 +31,7 @@
 			chartWidth = endX-startX;
 			chartHeight = endY-startY;
 			nodeSideLength = 8;
-			this.chartData = chartData;			
+			this.chartData = chartData;
 
 			if (settings != undefined) {
 				if (settings.chartColor != "" && settings.chartColor != undefined) {
@@ -39,24 +39,24 @@
 				}
 				if (settings.backgroundColor != "" && settings.backgroundColor != undefined) {
 					this.backgroundColor = settings.backgroundColor;
-				}				
+				}
 				if (settings.chartLinesColor != "" && settings.chartLinesColor != undefined) {
 					this.chartLinesColor = settings.chartLinesColor;
 				}
 				if (settings.textColor != "" && settings.textColor != undefined) {
 					this.textColor = settings.textColor;
-				}				
+				}
 			}
 
-			canvas.style.backgroundColor = backgroundColor;			
+			canvas.style.backgroundColor = backgroundColor;
 
-			//Generate colors for all the data sets			
+			//Generate colors for all the data sets
 			for (var i = 0; i < chartData.data.length; i++) {
 				colors[i] = generateHexColor();
 			}
 
 			drawChart(chartData);
-				
+
 			canvas.onmousemove = function(e) {
 				checkCollision(e.clientX, e.clientY);
 			}
@@ -77,7 +77,7 @@
 
 			context.fillStyle = backgroundColor;
 			context.fillRect(infoStartX, infoStartY, infoRectWidth, infoRectHeight);
-			
+
 			for (var i = 0; i < chartData.data.length; i++) {
 				var textWidth = context.measureText(chartData.data[i].name).width;
 				context.fillStyle = textColor;
@@ -88,23 +88,23 @@
 				drawLine(infoStartX+infoRectWidth*0.1, infoStartY+25+(i*25), infoStartX+infoRectWidth*0.9, infoStartY+25+(i*25));
 			}
 
-		} 
-		
-		function drawAxis(chartData) {	
+		}
+
+		function drawAxis(chartData) {
 			var cols = chartData.cols;
 			var YAxisMax = getYAxisMax(chartData.data);
 
 			context.strokeStyle = chartColor;
 			context.fillStyle = chartColor;
-			
+
 			//Draws chart lines
 			drawLine(startX, startY, startX, endY);
-			drawLine(startX, endY, endX, endY);			
+			drawLine(startX, endY, endX, endY);
 
 			//Draws y-axis arrow and x-axis arrow
 			drawTriangle(startX, startY-7, startX+5, startY, startX-5, startY);
 			drawTriangle(endX+7, endY, endX, endY+5, endX, endY-5);
-			
+
 			context.fillStyle = textColor;
 			context.font = "8pt Arial";
 			context.strokeStyle = chartLinesColor; //For background lines color
@@ -117,28 +117,28 @@
 
 			//Draws Y-axis values and background lines
 			for (var i = 0; i < 11; i++) {
-				var value = (YAxisMax/10)*i;	
+				var value = (YAxisMax/10)*i;
 				context.fillText(value, startX-context.measureText(value).width-5,
- 					((11-i)*(chartHeight/11)+(margin-11)));			
+ 					((11-i)*(chartHeight/11)+(margin-11)));
 				drawLine(startX, ((11-i)*(chartHeight/11)+(margin-11)), endX, ((11-i)*(chartHeight/11)+(margin-11)));
 			}
 		}
 
-		function drawChartLines(chartData) {			
+		function drawChartLines(chartData) {
 			var yMax = getYAxisMax(chartData.data);
 			var yDiff = chartHeight/(yMax+(yMax/10));
-			var xDiff = chartWidth/chartData.cols.length;			
+			var xDiff = chartWidth/chartData.cols.length;
 			var nodeX;
 			var nodeY;
 
-			context.lineWidth = 0.7;		
+			context.lineWidth = 0.7;
 
 			for (var i = 0; i < chartData.data.length; i++) {
 				context.strokeStyle = colors[i];
 				var values = chartData.data[i].values;
 
-				for (var j = 0; j < values.length-1; j++) {		
-					//Draws the line between two nodes					
+				for (var j = 0; j < values.length-1; j++) {
+					//Draws the line between two nodes
 					drawLine(margin+25+xDiff*j, endY-11-values[j]*yDiff,
 						 margin+25+xDiff*(j+1), endY-11-values[j+1]*yDiff);
 
@@ -146,7 +146,7 @@
 
 					nodeX = margin-(nodeSideLength/2)+25+xDiff*j;
 					nodeY = endY-(nodeSideLength/2)-11-values[j]*yDiff;
-					
+
 					//Draws the node for the current line
 					context.fillRect(nodeX,	nodeY, nodeSideLength, nodeSideLength);
 
@@ -174,8 +174,8 @@
 						       "color": colors[i]
 					   	      };
 			}
-		}	
-	
+		}
+
 		//Draws a line to canvas
 		function drawLine(x1, y1, x2, y2) {
 			context.beginPath();
@@ -193,15 +193,15 @@
 			context.lineTo(x1, y1);
 			context.fill();
 		}
-			
+
 		//Returns the highest value found in data arrays
-		function getYAxisMax(arrays) {			
+		function getYAxisMax(arrays) {
 			var largestNumber = 0;
 			for (var i = 0; i < arrays.length; i++) {
 				var temp = Math.max.apply(Math, arrays[i].values);
 				if (temp > largestNumber) {
 					largestNumber = temp;
-				}					
+				}
 			}
 
 			if (largestNumber <= 1) {
@@ -214,7 +214,7 @@
 			return Math.ceil(largestNumber/100)*100;
 
 		}
-		
+
 		//Returns a hex color
 		function generateHexColor() {
 			var chars = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
@@ -224,21 +224,26 @@
 			}
 			return color;
 		}
-		
+
 		//Checks if mouse pointer is over a node
 		function checkCollision(x, y) {
-			var a = 30;
+			var canvas_element = document.getElementById("canvas");
+			var offset = {
+					x: canvas_element.offsetLeft,
+					y: canvas_element.offsetTop
+				};
+
 			for (var i = 0; i < nodes.length; i++) {
 				var nodeX = nodes[i].xpos;
 				var nodeY = nodes[i].ypos;
 
-				if (x > nodeX+a && x < nodeX+nodeSideLength+a && y > nodeY+a && y < nodeY+nodeSideLength+a) {
-					foundNode = true;					
+				if (x > nodeX+offset.x && x < nodeX+nodeSideLength+offset.x && y > nodeY+offset.y && y < nodeY+nodeSideLength+offset.y) {
+					foundNode = true;
 					drawDetails(nodes[i]);
 					return;
 				}
-				else {				
-					if (foundNode == true) {					
+				else {
+					if (foundNode == true) {
 						repaint();
 						foundNode = false;
 					}
