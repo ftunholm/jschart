@@ -96,7 +96,7 @@
 
 			context.strokeStyle = chartColor;
 			context.fillStyle = chartColor;
-
+	
 			//Draws chart lines
 			drawLine(startX, startY, startX, endY);
 			drawLine(startX, endY, endX, endY);
@@ -108,7 +108,7 @@
 			context.fillStyle = textColor;
 			context.font = "8pt Arial";
 			context.strokeStyle = chartLinesColor; //For background lines color
-			context.lineWidth = 0.4; //For background lines width
+			context.lineWidth = 0.5; //For background lines width
 
 			//Draws column names
 			for (var i = 0; i < cols.length; i++) {
@@ -120,7 +120,7 @@
 				var value = (YAxisMax/10)*i;
 				context.fillText(value, startX-context.measureText(value).width-5,
  					((11-i)*(chartHeight/11)+(margin-11)));
-				drawLine(startX, ((11-i)*(chartHeight/11)+(margin-11)), endX, ((11-i)*(chartHeight/11)+(margin-11)));
+				drawLine(startX+1, ((11-i)*(chartHeight/11)+(margin-11)), endX, ((11-i)*(chartHeight/11)+(margin-11)));
 			}
 		}
 
@@ -181,6 +181,7 @@
 			context.beginPath();
 			context.moveTo(x1, y1);
 			context.lineTo(x2, y2);
+			context.closePath();
 			context.stroke();
 		}
 
@@ -191,6 +192,7 @@
 			context.lineTo(x2, y2);
 			context.lineTo(x3, y3);
 			context.lineTo(x1, y1);
+			context.closePath();
 			context.fill();
 		}
 
