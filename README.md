@@ -42,7 +42,7 @@
 
 
 	<body>
-		<canvas id="canvas" width="800" height="400" style="padding: 10px;">
+		<canvas id="canvas" width="800" height="400">
 			Canvas not supported!
 		</canvas>
 
